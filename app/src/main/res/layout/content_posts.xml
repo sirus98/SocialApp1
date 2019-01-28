@@ -4,12 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".view.activity.MainActivity">
-
-    <Button
-        android:id="@+id/sign_in"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="SIGN IN" />
+    app:layout_behavior="@string/appbar_scrolling_view_behavior"
+    tools:context=".view.activity.PostsActivity"
+    tools:showIn="@layout/app_bar_posts">
 
 </android.support.constraint.ConstraintLayout>
