@@ -13,6 +13,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 
 import com.example.gerard.socialapp.GlideApp;
@@ -54,6 +55,7 @@ public class NewPostActivity extends AppCompatActivity {
     Button mImageButton;
     Button mVideoButton;
     Button mAudioButton;
+    ImageButton deletePreview;
 
     Uri mFileUri;
 
@@ -85,6 +87,7 @@ public class NewPostActivity extends AppCompatActivity {
         mCameraImageButton = findViewById(R.id.btnCameraImage);
         mCameraVideoButton = findViewById(R.id.btnCameraVideo);
         mMicButton = findViewById(R.id.btnMic);
+        deletePreview = findViewById(R.id.deleteImage);
 
         mPublishButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -140,6 +143,17 @@ public class NewPostActivity extends AppCompatActivity {
                 startActivityForResult(new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Audio.Media.EXTERNAL_CONTENT_URI), RC_AUDIO_PICK);
             }
         });
+
+        deletePreview.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mediaType = null;
+                mediaUri = null;
+                mFileUri = null;
+                deletePreview.setVisibility(View.GONE);
+                imagePreview.setVisibility(View.GONE);
+            }
+        });
     }
 
     @Override
@@ -168,6 +182,8 @@ public class NewPostActivity extends AppCompatActivity {
         }
 
         else if(data != null) {
+            imagePreview.setVisibility(View.VISIBLE);
+            deletePreview.setVisibility(View.VISIBLE);
              if (requestCode == RC_IMAGE_PICK) {
                 mediaUri = data.getData();
                 mediaType = "image";

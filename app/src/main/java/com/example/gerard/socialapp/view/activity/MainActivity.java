@@ -6,9 +6,11 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 
 import com.example.gerard.socialapp.R;
+import com.example.gerard.socialapp.model.User;
 import com.firebase.ui.auth.AuthUI;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.Arrays;
 
@@ -34,6 +36,12 @@ public class MainActivity extends AppCompatActivity {
     void comeIn(){
         FirebaseUser firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
         if (firebaseUser != null) {
+
+            User user = new User();
+            user.name = firebaseUser.getDisplayName();
+            user.photoUrl = firebaseUser.getPhotoUrl().toString();
+
+            FirebaseDatabase.getInstance().getReference().child("users").child(firebaseUser.getUid()).setValue(user);
             startActivity(new Intent(this, PostsActivity.class));
             finish();
         }

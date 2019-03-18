@@ -14,6 +14,7 @@ import com.example.gerard.socialapp.R;
 import com.example.gerard.socialapp.model.Post;
 import com.example.gerard.socialapp.view.PostViewHolder;
 import com.example.gerard.socialapp.view.activity.MediaActivity;
+import com.example.gerard.socialapp.view.activity.ProfileActivity;
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.firebase.ui.database.FirebaseRecyclerOptions;
 import com.google.firebase.auth.FirebaseAuth;
@@ -35,6 +36,9 @@ public class PostsFragment extends Fragment {
         mReference = FirebaseDatabase.getInstance().getReference();
         mUser = FirebaseAuth.getInstance().getCurrentUser();
 
+
+
+
         FirebaseRecyclerOptions options = new FirebaseRecyclerOptions.Builder<Post>()
                 .setIndexedQuery(setQuery(), mReference.child("posts/data"), Post.class)
                 .setLifecycleOwner(this)
@@ -48,6 +52,8 @@ public class PostsFragment extends Fragment {
                 LayoutInflater inflater = LayoutInflater.from(viewGroup.getContext());
                 return new PostViewHolder(inflater.inflate(R.layout.item_post, viewGroup, false));
             }
+
+
 
             @Override
             protected void onBindViewHolder(final PostViewHolder viewHolder, int position, final Post post) {
@@ -65,6 +71,14 @@ public class PostsFragment extends Fragment {
                 }
 
                 viewHolder.content.setText(post.content);
+
+
+                viewHolder.delete.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        mReference.child("posts").child("data").child(postKey).setValue(null);
+                    }
+                });
 
                 if (post.mediaUrl != null) {
                     viewHolder.image.setVisibility(View.VISIBLE);
@@ -99,6 +113,14 @@ public class PostsFragment extends Fragment {
                             mReference.child("posts/data").child(postKey).child("likes").child(mUser.getUid()).setValue(true);
                             mReference.child("posts/user-likes").child(mUser.getUid()).child(postKey).setValue(true);
                         }
+                    }
+                });
+                viewHolder.photo.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Intent intent = new Intent(getActivity(), ProfileActivity.class);
+                        intent.putExtra("UID",post.uid);
+                        startActivity(intent);
                     }
                 });
             }
